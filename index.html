@@ -4,20 +4,22 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Compteur Raïssa</title>
-
-  <!-- ✅ CORRECT: Source valide pour Tabletop.js -->
-  <script src="https://cdn.jsdelivr.net/gh/jsoma/tabletop@master/src/tabletop.js"></script>
-
   <style>
     body {
       background: #fffaf6;
       font-family: 'Segoe UI', sans-serif;
       color: #333;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      position: relative;
+    }
+
+    .center-content {
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100vh;
-      margin: 0;
+      height: 100%;
     }
 
     .counter-container {
@@ -41,33 +43,54 @@
       font-size: 1.2em;
       color: #666;
     }
+
+    .custom-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: transparent;
+      color: #f178b6;
+      border: 2px solid #f178b6;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .custom-button:hover {
+      background: #f178b630;
+    }
   </style>
 </head>
 <body>
 
-  <div class="counter-container">
-    <div class="counter" id="pregnantCounter">...</div>
-    <div class="label">Femmes enceintes accompagnées</div>
+  <div class="center-content">
+    <div class="counter-container">
+      <div class="counter" id="counter">0</div>
+      <div class="label">Femmes enceintes</div>
+    </div>
   </div>
-  
+
   <script>
-    Tabletop.init({
-      key: '1snKSnjQgNmAjR6PUDmnJQfZfn4glCAvAonHx5NvQEXI', // 📝 ID de ta Google Sheet
-      simpleSheet: true,
-      callback: function(data) {
-        console.log("✅ Données reçues :", data);
-        if (data && data[0]) {
-          const valeur = data[0].nombre_femmes_enceintes;
-          console.log("📦 valeur dans le champ :", valeur);
-          const count = parseInt(valeur);
-          document.getElementById("pregnantCounter").textContent = isNaN(count)
-            ? "Erreur"
-            : count.toLocaleString();
-        } else {
-          document.getElementById("pregnantCounter").textContent = "Erreur de données";
+    const target = 72; // ← modifie ce chiffre
+    const duration = 4000; // Durée totale de l'animation (en ms)
+    const stepTime = Math.floor(duration / target); // Temps entre chaque +1
+
+    let current = 0;
+    const el = document.getElementById("counter");
+
+    function animate() {
+      const interval = setInterval(() => {
+        current++;
+        el.textContent = current.toLocaleString();
+        if (current >= target) {
+          clearInterval(interval);
         }
-      }
-    });
+      }, stepTime);
+    }
+
+    document.addEventListener("DOMContentLoaded", animate);
   </script>
 
 </body>
