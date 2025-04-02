@@ -53,10 +53,17 @@
       key: '1WC5eMK_x-2hfbu9hnPqPV3q46GNP64aoqK7PcgBFsLQ',
       simpleSheet: true,
       callback: function(data) {
-        console.log('Données reçues de Google Sheets :', data);
-        const count = parseInt(data[0].nombre_femmes_enceintes);
-        document.getElementById("pregnantCounter").textContent = count.toLocaleString();
-      }
+  console.log("✅ Données reçues :", data);
+  if (data && data[0]) {
+    const valeur = data[0].nombre_femmes_enceintes;
+    console.log("📦 valeur dans le champ :", valeur);
+    const count = parseInt(valeur);
+    document.getElementById("pregnantCounter").textContent = isNaN(count) ? "Erreur" : count.toLocaleString();
+  } else {
+    document.getElementById("pregnantCounter").textContent = "Erreur de données";
+  }
+}
+
     });
   </script>
 
