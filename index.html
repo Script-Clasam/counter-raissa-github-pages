@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Compteur Raïssa</title>
-  <script src="https://unpkg.com/tabletop@1.6.0/tabletop.js"></script>
-  
+
+  <!-- ✅ CORRECT: Source valide pour Tabletop.js -->
+  <script src="https://cdn.jsdelivr.net/gh/jsoma/tabletop@master/src/tabletop.js"></script>
+
   <style>
     body {
       background: #fffaf6;
@@ -50,20 +52,21 @@
 
   <script>
     Tabletop.init({
-      key: '1WC5eMK_x-2hfbu9hnPqPV3q46GNP64aoqK7PcgBFsLQ',
+      key: '1WC5eMK_x-2hfbu9hnPqPV3q46GNP64aoqK7PcgBFsLQ', // 📝 ID de ta Google Sheet
       simpleSheet: true,
       callback: function(data) {
-  console.log("✅ Données reçues :", data);
-  if (data && data[0]) {
-    const valeur = data[0].nombre_femmes_enceintes;
-    console.log("📦 valeur dans le champ :", valeur);
-    const count = parseInt(valeur);
-    document.getElementById("pregnantCounter").textContent = isNaN(count) ? "Erreur" : count.toLocaleString();
-  } else {
-    document.getElementById("pregnantCounter").textContent = "Erreur de données";
-  }
-}
-
+        console.log("✅ Données reçues :", data);
+        if (data && data[0]) {
+          const valeur = data[0].nombre_femmes_enceintes;
+          console.log("📦 valeur dans le champ :", valeur);
+          const count = parseInt(valeur);
+          document.getElementById("pregnantCounter").textContent = isNaN(count)
+            ? "Erreur"
+            : count.toLocaleString();
+        } else {
+          document.getElementById("pregnantCounter").textContent = "Erreur de données";
+        }
+      }
     });
   </script>
 
