@@ -1,80 +1,70 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
   <title>Compteur Raïssa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
+      background: #fffaf6;
       font-family: 'Segoe UI', sans-serif;
-      background-color: #fffaf6;
       color: #333;
-      margin: 0;
-      padding: 0;
       display: flex;
-      justify-content: center;
       align-items: center;
-      min-height: 100vh;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
     }
 
     .counter-container {
-      background-color: #ffffff;
-      padding: 30px 40px;
+      background: #ffffff;
+      padding: 30px;
       border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
       text-align: center;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      max-width: 400px;
+      width: 90%;
     }
 
     .counter {
-      font-size: 3rem;
+      font-size: 3em;
       color: #f178b6;
       font-weight: bold;
     }
 
     .label {
-      font-size: 1.3rem;
-      color: #444;
-    }
-
-    @media (max-width: 600px) {
-      .counter {
-        font-size: 2.5rem;
-      }
-      .label {
-        font-size: 1.1rem;
-      }
+      margin-top: 10px;
+      font-size: 1.2em;
+      color: #666;
     }
   </style>
 </head>
 <body>
+
   <div class="counter-container">
-    <div class="counter" id="pregnantCounter">0</div>
-    <div class="label">Femmes Enceintes accompagnées</div>
+    <div class="counter" id="pregnantCounter">...</div>
+    <div class="label">Femmes enceintes accompagnées</div>
   </div>
 
   <script>
-    function animateCounter(id, endValue, duration = 2000) {
-      const el = document.getElementById(id);
-      let start = 0;
-      const increment = endValue / (duration / 16);
+    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR14HdjaAMYSuos11fko18ho87YPG4AwpiAluSY8VmXedIz7P0BkmhZJcwSvpVtmiclreVuyTK05T25/pub?gid=0&single=true&output=csv";
 
-      function update() {
-        start += increment;
-        if (start >= endValue) {
-          el.textContent = endValue.toLocaleString();
-        } else {
-          el.textContent = Math.ceil(start).toLocaleString();
-          requestAnimationFrame(update);
-        }
-      }
-
-      update();
-    }
-
-    const targetPregnantWomen = 124; // ➕ change ce chiffre à volonté
-    document.addEventListener('DOMContentLoaded', () => {
-      animateCounter('pregnantCounter', targetPregnantWomen);
-    });
+    fetch(csvUrl)
+      .then(response => response.text())
+      .then(csv => {
+        const rows = csv.trim().split("\n");
+        const headers = rows[0].split(",");
+        const values = rows[1].split(",");
+        const index = headers.indexOf("nombre_femmes_enceintes");
+        const count = values[index];
+        document.getElementById("pregnantCounter").textContent = parseInt(count).toLocaleString();
+      })
+      .catch(err => {
+        console.error("Erreur :", err);
+        
+        document.getElementById("pregnantCounter").textContent = "Erreur";
+      });
   </script>
+
 </body>
 </html>
