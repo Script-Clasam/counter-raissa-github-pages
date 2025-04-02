@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Compteur Raïssa</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://unpkg.com/tabletop@1.6.0/tabletop.js"></script>
+  
   <style>
     body {
       background: #fffaf6;
@@ -47,23 +49,15 @@
   </div>
 
   <script>
-    const csvUrl = "https://docs.google.com/spreadsheets/d/e/2PACX-1vR14HdjaAMYSuos11fko18ho87YPG4AwpiAluSY8VmXedIz7P0BkmhZJcwSvpVtmiclreVuyTK05T25/pub?gid=0&single=true&output=csv";
-
-    fetch(csvUrl)
-      .then(response => response.text())
-      .then(csv => {
-        const rows = csv.trim().split("\n");
-        const headers = rows[0].split(",");
-        const values = rows[1].split(",");
-        const index = headers.indexOf("nombre_femmes_enceintes");
-        const count = values[index];
-        document.getElementById("pregnantCounter").textContent = parseInt(count).toLocaleString();
-      })
-      .catch(err => {
-        console.error("Erreur :", err);
-        
-        document.getElementById("pregnantCounter").textContent = "Erreur";
-      });
+    Tabletop.init({
+      key: '1WC5eMK_x-2hfbu9hnPqPV3q46GNP64aoqK7PcgBFsLQ',
+      simpleSheet: true,
+      callback: function(data) {
+        console.log('Données reçues de Google Sheets :', data);
+        const count = parseInt(data[0].nombre_femmes_enceintes);
+        document.getElementById("pregnantCounter").textContent = count.toLocaleString();
+      }
+    });
   </script>
 
 </body>
